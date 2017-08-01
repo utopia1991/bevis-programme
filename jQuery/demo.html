@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>jQuery</title>
+	<style>
+		.arr {
+			width: 100px;
+			background: #333;
+			line-height: 50px;
+			text-align: center;
+			cursor: pointer;
+			margin: 20px 0;
+			color: #fff;
+		}
+		ul, li {
+			list-style: none;
+		}
+		.oldold {
+			padding: 20px;
+		}
+		.newnew {
+			padding: 10px;
+		}
+		#top, .bottom, .bind, .one, .trigger {
+			border: 1px solid #999;
+			height: 50px;
+			width: 50px;
+			cursor: pointer;
+			text-align: center;
+			line-height: 50px;
+		}
+	</style>
+</head>
+<body>
+	<ul class="arr">
+		<li id="1" class="new" data-a="a">1</li>
+		<li id="2" class="old">2</li>
+		<li id="3" class="new" data-a="a">3</li>
+		<li id="4" class="new" data-a="a">4</li>
+		<li id="5" class="old">5</li>
+		<li id="6" class="latest" data-a="a">6</li>
+	</ul>
+	<input id="input" value="aaaa"/>
+	<p class="data">
+		this is data <span></span>
+	</p>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<hr>
+	<hr>
+	<hr>
+	<hr>
+	<hr>
+	<hr>
+	<hr>
+	<hr>
+	<div id="top">
+		top
+	</div>
+	<div class="bottom">
+		bottom
+	</div>
+	<div class="bind">
+		bind
+	</div>
+	<div class="one">
+		one
+	</div>
+	<div class="trigger">
+		trigger
+	</div>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		// map()
+		var a = $('.arr > li').map(function(){
+			return this.id;
+		}).toArray().sort();
+
+		console.log("map: ", a);   // ["1", "2", "3", "4", "5", "6"]
+
+		// 1.getter 和 setter
+
+		// jquery getter 和 setter，jquery 最常用的操作就是获取（get）和设置（set）html属性、css属性、元素内容和高宽值
+		// jquery 使用同一个方法既当 get 又当 set 方法，如果传入一个新值，则为 set 方法，不传入则为 get 方法，返回当前值
+		// 用 setter 时
+		// 这些方法会给 jquery 对象中的每一个元素设置值，之后返回该对象
+		// 这些方法经常接受对象参数，这种情况下，该对象的每一个属性都指定一个需要设置的名／值对
+		// 这些方法经常接受函数参数，这种情况下，会调用该函数来计算需要设置的值，调用该函数时的 this 值是对应的元素，第一个参数是该元素的索引值，当前值则作为第二个参数传入
+		// 用 getter 时
+		// 这些方法只会查询元素集中的第一个元素，返回单个值，如果要遍历则使用 map() 方法，getter 不会返回调用自身的 jquery 对象，因此它只能出现在链式调用的结尾
+
+		// 1.1. 获取和设置 html 属性：attr(), removeAttr()
+		// attr() 函数是 jquery 中获取 html 属性的 getter／setter 方法
+		// 作为 getter 用就返回第一个单个值
+		var b = $('.arr li.new').attr("data-a");
+		console.log("attr getter: ", b); // 1
+		// 作为 setter 会作用于每个对象
+		$('.arr li.new').attr("data-b", "b");  // <li id="1" class="new" data-a="a" data-b="b">1</li>...
+		// 作为 setter 可以传入一个对象，这样会塞入这些对象的每个名／值对
+		$('.arr li.old').attr({
+			"data-a":"a",
+			"data-b":"b",
+			"data-c":"c"
+		});  // <li id="2" class="old" data-a="a" data-b="b" data-c="c">2</li>...
+
+		// removeAttr() 函数来移除元素属性：css()
+		$('.arr li.old').removeAttr("data-c");  // <li id="2" class="old" data-a="a" data-b="b">2</li>...
+
+		// 1.2. 获取和设置 css 属性：css()
+		// css() 函数和 attr() 函数很类似，只是 css() 是用来操作 css，不能操作 html
+		// 在获取样式值时，css() 返回的是元素当前样式，返回值可能来自 style 属性，也可能来自 样式表
+		// css() 允许要取得的样式名为“font-weight”或者“fontWeight”这两种风格，不允许使用复合样式名“font”
+		var c = $(".arr").css("background");
+		console.log("css: ", c);  // rgb(51, 51, 51) none repeat scroll 0% 0% / auto padding-box border-box
+
+		$(".new").css("color", "#666");
+		$(".latest").css({
+			"font-weight" : "bold",
+			"font-size" : "25px",
+			"color" : "#999"
+		});
+
+		// 1.3. 获取和设置 css 类：addClass(), removeClass(), toggleClass() 和 hasClass()
+		// addClass() 添加类
+		// removeClass() 移除类
+		// toggleClass() 元素没有当前类时添加当前类，反之移除
+		// hasClass() 判断某类是否存在，只能接受单个类名作为参数，任意元素有指定类返回 true，否则为 false
+		$(".old").addClass('oldold');
+		$(".new").removeClass('new').toggleClass('newnew');
+		var d = $('li').hasClass('old');
+		console.log("hasClass: ", d);  // true
+
+		// 1.4. 获取和设置 html 表单值：val()
+		// val() 方法用来设置和获取 html 表单元素的 value 值
+		var e = $("#input").val();  // aaaa
+		var f = $("#input").val("bbbb").val();
+		console.log("value: ", e);  // aaaa
+		console.log("value: ", f);  // bbbb
+
+		// 1.5. 获取和设置元素内容：text() 和 html()
+		// text() 获取和设置纯文本，不带参数这会取得所有子孙文本节点的纯文本内容
+		// html() 获取和设置纯 html 内容，不带参数会返回第一个匹配元素的 html 内容
+
+		// 1.6. 获取和设置元素的位置高宽：position(), width(), height(), innerWidth(), innerHeight(), outerWidth(), outerHeight(), scrollTop() 和 scrollLeft()
+		// position() 返回相对于其偏移父元素的元素位置，只能用于 getter
+		// 高宽度都是不包含 margin 值，值比较 outerWidth > innerWidth > width
+
+		// width() 返回基本的宽度（不包含 padding，border），可以做 getter 也可以做 setter
+		// innerWidth() 返回基本的宽度（不包含 border），只能用于 getter
+		// outerWidth() 返回基本的宽度，只能用于 getter
+
+		// height() 返回基本的高度（不包含 padding，border），可以做 getter 也可以做 setter
+		// innerHeight() 返回基本的高度（不包含 border），只能用于 getter
+		// outerHeight() 返回基本的高度，只能用于 getter
+
+		var g1 = $('#input').position();
+		var g2 = $('#input').width();
+		var g3 = $('#input').innerWidth();
+		var g4 = $('#input').outerWidth();
+		console.log("position: ", g1);  // {top: 482, left: 8}
+		console.log("width: ", g2);  // 126
+		console.log("innerWidth: ", g3);  // 128，比 width 多了 padding
+		console.log("outterWidth: ", g4);  // 132，比 innerWidth 多了 border
+
+		// width 和 height 有其他四种方法没有的特性
+		// width 和 height 的操作对象是 window／document 的时候返回的是窗口的视口大小／文档的整体尺寸，而其他方法只能适用于元素
+		// 作为 setter 传入数值会以“px”为单位设置高宽度
+		$('#input').width("200px").height("40px");
+
+		// scrollTop() 和 scrollLeft() 可获取或设置元素的滚动条位置，可用在 window 和 document 元素上
+		$("#top").click(function(){
+			$(window).scrollTop('0px');
+		});
+
+		// 1.7. 获取和设置元素数据：data(), removeData()
+		// jquery 定义了 data() 的 getter／setter 方法来设置或获取文档元素，document 和 window 对象相关联的数据
+		// 用作 setter 时
+		// 传递名称和值两个参数就可以了，但是不接受函数参数
+		// 用作 getter 时
+		// 当传入一个字符串参数调用 data() 时，他会返回对于第一个元素与该字符串参数相关联的数据值
+
+		// 设置 data
+		$(".data").data("x", 26);
+		$(".data span").text($(".data").data("x"));
+		// 获取 data
+		var h1 = $(".data").data("x")
+		console.log('data getter: ', h1); // 26
+
+		// removeData() 用来删除数据
+		$(".data").removeData("x");
+		var h2 = $(".data").data("x")
+		console.log('data removeData: ', h2); // undefined
+
+		// 2. 修改文档结构
+
+		// 2.1. 插入或替换元素有五个（ $(target).method(content) ）：append(), prepend(), after(), before(), replaceWith()
+		// append() 在目标元素结尾处插入内容，类似的功能为 appendTo()，用法为 $(content).appendTo(target)
+		// prepend() 在目标元素开头处插入内容，类似的功能为 prependTo()，用法为 $(content).prependTo(target)
+		// after() 在目标元素后面插入内容，类似的功能为 insertAfter()，用法为 $(content).insertAfter(target)
+		// before() 在目标元素前面插入内容，类似的功能为 insertBefore()，用法为 $(content).insertBefore(target)
+		// replaceWith() 把目标元素替换为内容，类似的功能为 replaceAll()，用法为 $(content).replaceAll(target)
+		$(".data").append("<p>this is add new</p>");
+		// $("<p>this is add new</p>").appendTo(".data");
+
+		$(".data").before("<p>this is add p</p>");
+		// $("<p>this is add p</p>").insertBefore(".data");
+
+		$("<hr>").replaceAll("br");
+		// $("br").replaceWith("<hr>");
+
+		// 2.2. 复制元素：clone()
+		// 如果我们想复制元素到新的位置而不是移动他，必须先用 clone() 方法得到副本
+		$("li").clone().insertAfter("#top");
+
+		// 2.3. 包装元素：wrap(), unwrap()
+		// wrap() 用传入的盒子包装每一个选中的元素
+		// wrapInner() 用传入的盒子包装每一个选中的元素的内容
+		// wrapAll() 将选中元素作为一组来包装
+		// unwrap() 移除元素的父元素
+		$(".arr").wrap("<div class=\"newnew\"></div>"); // <div class="newnew"><ul class="arr">...</ul></div>
+		$("#top").wrapInner("<span>yeah</span>"); // <div id="top"><span>yeah top</span></div>
+		$("hr:not(:first)").wrapAll("<div class=\"newnew\"></div>");  // <div class="newnew"><hr>...<hr></div>
+		$("hr:not(:first)").unwrap();  // <hr>...<hr>
+
+		// 2.4. 删除元素：empty(), remove(), detach()
+		// empty() 删除每个选中元素的的所有子节点（包括文本节点），但不会修改元素自身
+		// remove() 会从文档中移除选中元素（以及所有元素的内容），remove() 会移除所有事件处理程序以及可能绑定到被移除元素上的其他数据
+		// detach() 和 remove() 类似，但不会移除事件处理程序和数据，若想临时移除元素之后在插入可以使用 detach()
+		$(".data").detach(); // 整个 class="data" 的元素会被移除大，但是不移除绑定在这个上面的事件处理程序
+		// $(".data").remove();
+		$("#top").empty();  // <div id="top"></div>，只移除元素的所有子节点，不影响自身，相当于晴空
+
+		// 3. 事件处理程序
+		// jquery 定义了简单的事件注册方法，可用于常用和普适的每一个浏览器事件，可以给所有选中的元素注册处理程序
+
+		// 3.1. 简单的事件注册
+		// jquery 简单的事件注册方法如下：
+		// blur() focusin() mousedown() mouseup()
+		// change() focusout() mouseenter() resize()
+		// click() keydown() mouseleave() scroll()
+		// dbclick() keypress() mousemove() select()
+		// error() keyup() mouseout() submit()
+		// focus() load() mouseover() unload()
+
+		// 注意点如下：
+		// focusin 和 focusout 支持冒泡，focus 和 blur 不支持，故使用后者
+		// mouseover 和 mouseout 支持，mouseenter() 和 mouseleave() 不支持，故使用后者
+		// resize() 和 unload() 事件只在 window 对象上触发，$(window).resize() 或 $(window).unload()
+		// scroll() 也经常使用在 $(window) 上，但也可以用在有滚动条的任何元素上
+		// hover() 可以用来给 mouseenter() 和 mouseleave() 事件注册处理程序，hover(f,g) 相当于 mouseenter(f) mouseleave(g)，如果传入一个参数则 enter 和 leave 都执行这个方法
+		// toggle() 方法切换元素的可见状态，若元素隐藏则显示该元素，当前显示则隐藏该元素，$(selector).toggle(speed,callback,switch)
+		// toggle() 方法参数：speed 从可见到隐藏的速度（或相反），callback 执行完后要执行的函数，switch 规定是否隐藏或者显示所有元素，true 显示，false 隐藏，由此参数则无法使用前两个参数
+		$("#top").hover(function(){
+			this.style.background = "#999";
+		}, function(){
+			this.style.background = "#fff";
+		});
+		$(".bottom").toggle(5000, function(){
+			console.log("it is 1");
+		});
+
+		// 3.2. 高级事件注册：bing(), one()
+		// 上面看到的简单的事件注册都是通过更复杂的 bing() 来命名的事件类型绑定处理程序
+		// $('p').click(function(){}) 等价于 $('p').bind('click', function(){})
+
+		// bing() 有三个特性：
+		// bing() 可以带入三个参数，第一参数：事件类型，第二参数：可以传入任何值，在调用处理程序前将指定的值设置为 event 对象的 data 属性，第三参数：处理程序
+		// bing() 有高级功能，第一参数由空格分割的事件类型，则处理函数会为每个命名的事件类型注册：$(target).bind('mouseenter mouseleave', function(){}) 相当于 $(target).hover(function(){})
+		// bing() 可以传入一个对象参数，该对象把事件名映射到处理程序函数，这样可以给一个元素一下子绑定多个事件
+		$('.bind').bind({
+			mouseenter: function(){
+				console.log('111');
+			},
+			mouseleave: function(){
+				console.log('222');
+			},
+			mousedown: function(){
+				console.log('333');
+			},
+			mouseup: function(){
+				console.log('444');
+			}
+		});
+
+		// one() 方法使用和 bind() 方法类似，只是 one 方法只会执行一次，调用之后就会被销毁
+		$('.one').one({
+			mouseenter: function(){
+				console.log('111');
+			},
+			mouseleave: function(){
+				console.log('222');
+			},
+			mousedown: function(){
+				console.log('333');
+			},
+			mouseup: function(){
+				console.log('444');
+			}
+		});
+
+		// 3.3. 注销事件处理程序：unbind()
+		// 用 bind() 或简单的事件注册处理程序后，可以使用 unbind() 来注销，以避免在将来的事件中触发它
+		// 不带参数时，unbind() 会注销所有 jquery 对象中所有的事件处理程序 $(target).unbind()
+		// 带参数时，unbind() 会注销所带入参数名的事件处理程序，可以多个使用空格隔开 $(target).unbind('click mouseenter')
+		// 如果只取消绑定自己注册的事件处理程序，必须保留事件处理程序函数的一个引用 $(target).unbind('click', myClickHandle)
+		// unbind() 方法可以传入一个对象参数，和 bind() 的使用类似来移除相应方法
+
+		// 3.4. 触发事件和自定义事件：trigger()
+		// 调用 trigger() 会在 当前 jquery 对象上触发传入参数的事件类型的所有处理程序
+		// trigger() 和 bind() 不同的是传入的字符串不能指定多个事件类型
+		// trigger() 触发的方法会冒泡，如果不想冒泡和阻止相关联的默认事件可以使用 triggerHandler() 来代替
+		// trigger() 用来完成模拟操作，例如要在页面一进入是执行某元素的 click 事件
+		$('.trigger').click(function(){
+			console.log("trigger!!!");
+		});
+		// 本来只有在点击 class="trigger" 按钮的时候才会触发事件，使用了 trigger 会直接触发
+		$('.trigger').trigger("click");  // 相当于 $('.trigger').click();
+
+		// bind() 可以注册自定义事件的处理程序，trigger() 可以调用这些自定义的处理程序
+		// 在自定义处理事件时，使用 $.event.trigger() 代替 trigger() 来全局触发会更有效
+		$(window).bind('bclick', function(){
+			console.log("my hanlder~~~");
+		});
+		$.event.trigger('bclick');
+
+		// 3.5. 实时事件：delegate(), undelegate()
+		// 当文档中新增加了元素，之前元素绑定了事件，但是新元素却绑定不上事件，这时候就要使用实时事件
+		// 通常我们在 $(document) 上调用 delegate()，传入选择器、事件类型、事件处理函数，例如 $(document).delegate("a", "click", function(){})
+		// 它会在 document 或者 window 上注册一个内部处理事件，当指定事件冒泡到内部处理程序时会判断事件目标是否匹配字符串，若匹配则调用
+		// delegate() 事件是依赖于事件冒泡的，假如设置了 cancelBulle() 方法，那 delegate() 将不会触发了
+
+	</script>
+</body>
+</html>

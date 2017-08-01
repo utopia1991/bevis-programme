@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>字符串</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// js 中提供了几个字符串方法，字符串是不可以修改的，所以字符串方法都是会返回一个新的字符
+
+		// 1.
+		// charAt() 方法返回索引中的字符
+		var s = "hello world";
+		var s1 = s.charAt(2);
+		var s2 = s.charAt(s.length - 1);
+		console.log("charAt: ", s1); // l
+		console.log("charAt: ", s2); // d
+
+		// 2.
+		// substring() 和 slice() 方法返回索引中指定的字符串
+		// substring() 和 slice() 这两个方法功能其实是一样的，包头不包尾
+		// 但是区别是 slice() 可以传入负数，substring() 不接受负数
+		// slice() 传入负数，-1代表最后一个元素，-2代表倒数第二个元素，以此类推
+		// 之所以 string 有 slice() 这个方法是因为字符串也可以当作字符的数组
+		var s3 = s.substring(1,4);
+		var s4 = s.slice(1,4);
+		var s41 = s.slice(-5,-1);
+		var s42 = s.slice(-7);
+		var s43 = s.substring(-5);
+		console.log("substring: ", s3); //  ell
+		console.log("slice: ", s4);  // ell
+		console.log("slice: ", s41);  // worl
+		console.log("slice: ", s42);  // o world
+		console.log("substring: ", s43);  // hello world
+
+		// 3.
+		// indexOf() 和 lastIndexOf() 方法返回指定元素的索引
+		// lastIndexOf() 返回指定元素最后一次出现的索引
+		var s5 = s.indexOf("l");
+		var s6 = s.lastIndexOf("l");
+		console.log("indexOf: ", s5); // 2
+		console.log("lastIndexOf: ", s6); // 9
+
+		// 4.
+		// toUpperCase() 和 toLowerCase() 方法，返回字母全大写／字母全小写的字符串
+		var s7 = s.toUpperCase();
+		var s8 = s.toLowerCase();
+		console.log("toUpperCase: ", s7); // HELLO WORLD
+		console.log("toLowerCase: ", s8); // hello world
+
+		// 5.
+		// trim() 方法返回去除开头和结尾处的空白字符
+		// 这个字符串方法在 ES5 被引入，ie9 以上浏览器才可以使用。
+		var d = " hello world ";
+		var s9 = s.trim();
+		console.log("trim: ", s9); // hello world
+
+
+		// 为了兼容就环境，如果当前的浏览器没有这个方法，我们可以使用一下代码给 String 的原型添加一个方法：
+
+		if (!String.prototype.trim) {
+			String.prototype.trim = function () {
+				return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+			};
+		}
+
+		// 6.
+		// split() 将一个字符串切分为数组
+		// 第一个数组是切分处的字符串或者正则
+		// 第二个字符串是限制返回数组的最大长度
+		var s10 = s.split(" ",1);
+		console.log("split: ", s10); // ["hello"]
+
+		// 7.
+		// replace() 替换给定的正则式的子串
+		var s11 = s.replace(/l/g,"L");
+		console.log("replace: ", s11);  // heLLo worLd
+
+		// 补充
+		// 因为字符串可以当作是单个字符组成的数组，所以可以直接用[n]来直接索引返回的元素
+		// length 是字符串的一个属性，代表这个字符串的字符长度
+		var s12 = s[6];
+		var s13 = s.length;
+		console.log(s12); // w
+		console.log(s13); // 11
+	</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用js或者css实现将彩色图片变成黑白</title>
+	<style>
+		.beGray {
+			-webkit-filter: grayscale(100%);
+			-moz-filter: grayscale(100%);
+			-ms-filter: grayscale(100%);
+			-o-filter: grayscale(100%);
+			filter: grayscale(100%); /*除 ie 之外的浏览器使用滤镜实现彩色变黑白图片效果*/
+			filter: gray; /* ie 浏览器使用滤镜实现彩色变黑白图片效果*/
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<img src="images/bem.png" class="beGray"/>
+	</div>
+</body>
+</html>

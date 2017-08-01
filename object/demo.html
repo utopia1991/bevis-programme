@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>对象</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// js 中对象是动态的，可以新增属性，也可以删除属性
+		// 除了字符串，数字，布尔值，null 和 undefined 之外的所有类似都是对象，函数，数组，日期，正则表达式都是特殊的对象
+
+		// 1.
+		// 对象是一个引用类型（reference type），对象值都是引用的
+		var a = []; // 定义了一个引用空数组的对象a
+		var b = a;  // b对象就引用了a对象，两者都指向了同一个对象，而非这个这个对象的副本
+		b[0] = 1;   // b 修改了引用的数组，那么 a 的引用的数组也会被改变
+		console.log("reference: ", a); // 输出 [1]
+
+		// 2.
+		// 每一个对象都从原型继承属性
+		// 如果一个对象b通过原型继承了另外一个对象a，对象a中有了x属性，假如b自行添加了一个x属性，那么调用b.x属性时会覆盖原来继承的x属性，但是原型上的a.x没有被修改
+
+		// 3.
+		// delete 操作符可以删除对象的属性
+		// delete 属性只能删除自有属性，而不能删除原型上继承的属性
+		// 要删除原型上继承的属性，必须从定义这个对象的原型上去删除，这样其他继承这个原型的对象都会失去这个属性
+		var c = {};
+		c.x = 'fuck';
+		c.y = 'you';
+		console.log("object c: ", c);
+		delete c.y;
+		console.log("object c: ", c);
+		// 通过变量声明和函数声明的创建的全局对象属性是不可以删除的
+		// 但是给全局对象this赋值的属性确是可以删除的
+		// var x = 1;
+		// function a() {};
+		// this.y = 1; // 没有用var，设置一个可配置的全局属性
+		// console.log(this.x);
+		// delete this.x; // 不能删除
+		// delete this.a; // 不能删除
+		// delete this.y; // 可以删除
+
+		// 4.
+		// 判断属性是否存在于对象中有几个方法：in 运算符，hasOwnProperty()，propertyIsEnumerable()
+		// in 运算符：如果对象的自有属性或者继承属性中包含这个属性则返回true
+		// hasOwnProperty()：用来检测给定的名字是否是对象的自有属性
+		var o = {x:1};
+		console.log("in: ", "x" in o); // true
+		// 假若y是o继承来的属性，那么返回也是true
+		console.log("hasOwnProperty: ", o.hasOwnProperty("x")); // true
+		// 除了in运算符之外，有一个更加简便的方法使用 “!==” 来判断属性是否是 undefined
+		console.log("!==: ", o.x !== undefined); // true
+
+		// 5.
+		// 枚举属性通常使用for in来循环遍历属性
+		// ES5 提供了两个用以枚举属性名称的函数：Object.keys() 和 Object.getOwnPropertyNames()
+		// Object.keys() 和 Object.getOwnPropertyNames() 是类似的，返回由可枚举自有属性名称组成的数组
+		var d = {x:1,y:2,z:3};
+		for (o in d)
+		console.log("for in: ", o); // x y z
+		console.log("getOwnPropertyNames: ", Object.getOwnPropertyNames(d)); // ["x", "y", "z"]
+		console.log("keys: ", Object.keys(d)); // ["x", "y", "z"]
+
+		// 6.
+		// getter（读取） 和 setter（写入） 属性
+		// getter：有时候希望访问属性时能返回一个动态计算后的值，或希望不通过使用明确的方法调用二显示内部变量的状态
+		// 同一个属性不能有两个get，也不能既有get又有属性键值对(不允许使用 { get x() { }, get x() { } } 和 { x: ..., get x() { } } )
+		// getter必须不带参数
+		// setter必须有一个明确的参数
+		var log = ['aaa','ccc','bbb','test'];
+		var obj = {
+			get latest() {
+				return log[log.length - 2];
+			},
+			set a(x) {
+				return this.b.push(x);
+			},
+			b:[]
+		};
+		console.log("getter: ", obj.latest); // bbb
+		obj.a = log;  // 设置setter，将log参数传到setter中
+		console.log("setter: ", obj.b); // ['aaa','ccc','bbb','test']
+
+		// 7.
+		// 对象有三个属性：原型 prototype，类 class，可扩展性
+		// 在 ES5 中增加了一个方法来创建对象 Object.create(prototye)
+		// 在 ES5 中增加了 isPrototypeOf() 来判断对象的原型是否是带入的对象，这个使用和 instanceof 运算符是类似的
+		// 原型 prototype
+		var p = { x:1 };
+		var o = Object.create(p);
+		console.log("create: ",o.x);  // 1，这个1的值继承自p
+		p.isPrototypeOf(o);
+		console.log("isPrototypeOf: ",p.isPrototypeOf(o)); // true
+		// 类 class，表示对象的类型信息而已。包括ES5以及之前的都没有提供其属性的方法，有个间接的方法去调用：toString()
+		// 然后提取第八个到最后一个位置的字符
+		// 为了正确调用 toString() 方法我们可以写一个 classof() 方法
+		console.log("class: ",p.toString()); // [object Object]
+		function classof(o){
+			if (o == null) return "Null";
+			if (o == undefined) return "Undefined";
+			return Object.prototype.toString.call(o).slice(8,-1);
+		}
+		console.log("classof: ",classof(p)); // Object
+
+		// 8.
+		// 对象序列化，就是将对象转化成字符串。
+		// ES5提供了两个函数 JSON.stringify() 序列化js对象，JSON.parse() 还原js对象
+		// JSON 是 JavaScript Object Notation -- js对象表示法
+		var str1 = JSON.stringify(p);
+		var str2 = JSON.parse(str1);
+		console.log("stringify: ", str1); // '{"x":1}' 将对象变成了字符串
+		console.log("parse: ", str2); // {x: 1} 将字符串解析成对象
+
+		// 9.
+		// 对象的方法常用的有7个：
+		//（1）hasOwnProperty() 用来检测给定的名字是否是对象的自有属性，返回布尔值
+		var g = {x:1};
+		console.log("hasOwnProperty: ", g.hasOwnProperty("x")); // true
+		// (2) propertyIsEnumerable() 用来检测指定的属性是否是可枚举的，返回布尔值
+		console.log("propertyIsEnumerable: ", g.propertyIsEnumerable("x")); // true
+		// (3) isPrototypeOf() 用来检测一个对象是否存在于另一个对象的原型链上，返回布尔值
+		console.log("isPrototypeOf: ", Object.prototype.isPrototypeOf(g)); // true
+		// (4) Object.create(prototye) 用来指定的原型对象和其属性创建了一个新的对象
+		console.log("Object.create: ", Object.create(g)); // {}
+		// (5) toString() 用来将对象变成字符串，类似 JSON.stringify()，但是这个方法却不会输出更多信息
+		console.log("toString: ", g.toString()); // [object Object]
+		// (6) valueOf() 用来返回指定对象的原始值
+		console.log("valueOf: ", g.valueOf()); // {x: 1}
+		// (7) Object.keys() 和 Object.getOwnPropertyNames() 用来枚举属性名称的函数（ES5），返回由可枚举自有属性名称组成的数组
+		console.log("keys: ", Object.keys(g)); // ["x"]
+		console.log("getOwnPropertyNames: ", Object.getOwnPropertyNames(g)); // ["x"]
+
+		// 补充：
+		// 在对象或者数组使用上，经常会使用到for循环，for in枚举是非常方便的方法
+		var k = [1,2,5,2,5,45,65];
+		for(var i=0; i<k.length; i++){
+			console.log("for: ", k[i]);
+			// for:  1
+			// for:  2
+			// for:  5
+			// for:  2
+			// for:  5
+			// for:  45
+			// for:  65
+		}
+		// 这个循环我们可以直接写成枚举，两者结果是一样的
+		for(var j in k){
+			console.log("for in:", k[j]);
+			// for:  1
+			// for:  2
+			// for:  5
+			// for:  2
+			// for:  5
+			// for:  45
+			// for:  65
+		}
+	</script>
+</body>
+</html>

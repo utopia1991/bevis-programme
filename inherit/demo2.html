@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ES5 继承方法</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// ES5 继承方法主要是使用新增加 Object.create() 方法规范了原型继承：
+		// 构造原型：
+		// 使用构造函数构建一个 Person 函数，将属性赋值在构造函数中
+		// 使用原型将方法挂在原型上，将方法赋值在原型中
+		function Person(first,last,age,gender,interests) {
+			this.name = first + ' ' + last;
+			this.age = age;
+			this.gender = gender;
+			this.interests = interests;
+			this.sprits = ["kind","good","happy"];
+		};
+		Person.prototype.greeting = function() {
+			return ('Hi! I\'m ' + this.name + '.');
+		}
+
+		// 构造实例：
+		// 借用函数 call（apply）来继承属性：
+		function Teacher(first, last, age, gender, interests, subject) {
+			Person.call(this, first, last, age, gender, interests);
+			// apply 方法
+			// Person.apply(this, [first, last, age, gender, interests]);
+			this.subject = subject;
+		}
+		// 使用原型来继承方法，ES5 中的区别就只是在用来继承方法上新增加的这个方法而已：
+		Teacher.prototype = Object.create(Person.prototype);
+		Teacher.prototype.constructor = Teacher;
+
+		// 假如这时候需要 Teacher 添加一个新的 greeting 方法，那么之前原型继承下来的方法就被覆盖了，但是原型上这个方法不会改变
+		Teacher.prototype.greeting = function() {
+			var prefix;
+			if(this.gender === 'male' || this.gender === 'Male' || this.gender === 'm' || this.gender === 'M') {
+				var prefix;
+				if(this.gender === 'male' || this.gender === 'Male' || this.gender === 'm' || this.gender === 'M') {
+					prefix = 'Mr.';
+				} else if(this.gender === 'female' || this.gender === 'Female' || this.gender === 'f' || this.gender === 'F') {
+					prefix = 'Mrs.';
+				} else {
+					prefix = 'Mx.';
+				}
+				return ('Hello. My name is ' + prefix + ' ' + this.name + ', and I teach ' + this.subject + '.');
+			}
+		};
+
+		var bevis = new Teacher("Bevis","Shen","26","male","coding","Math");
+		console.log(bevis);
+		console.log("greeting: ", bevis.greeting());
+	</script>
+</body>
+</html>

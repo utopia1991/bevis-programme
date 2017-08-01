@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>字符串foo="get-element-by-id",写一个function将其转化成驼峰表示法"getElementById"</title>
+</head>
+<body>
+	<script type="text/javascript">
+		var foo = "get-element-by-id";
+
+		function combo(s) {
+			var a = s.split('-');
+			for(var i=1; i<a.length;i++){
+				a[i] = a[i].charAt(0).toUpperCase() + a[i].substring(1);
+			};
+			return a.join("");
+		};
+
+		console.log(combo(foo));
+	</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>脚本化CSS</title>
+	<style>
+		#demo {
+			/* font 的一次性写法: font-weight font-size/line-height font-family */
+			font: bold 20px/30px 'Microsoft Yahei';
+		}
+		.span2 {
+			height: 30px;
+			line-height: 30px;
+			background-color: #999;
+		}
+		.span2-animate {
+			text-indent: 20px;
+			height: 50px;
+			line-height: 50px;
+			background-color: #000;
+			color:#fff;
+		}
+	</style>
+</head>
+<body>
+	<div id="demo">
+		test
+	</div>
+	<div class="span1">
+		this is a span1
+	</div>
+	<div class="span2">
+		this is a span2
+	</div>
+	<script type="text/javascript">
+		// 1. 实现非标准属性
+		// 在浏览器实现非标准 css 属性时，会用属性名前加一个厂商前缀
+		// firefox 使用 -moz-，chrome 使用 -webkit-，IE 使用 -ms-，opera 使用 -o-
+		// 然而在标准成熟之后就去掉了前缀，最新的 chrome，firefox 和 IE9 都去除了前缀
+
+		// 2.脚本化的内联样式
+		// 和大多数的 html 属性一样，style 也是 html 的属性，我们可以直接通过设置style的属性的样式来控制样式
+		// 但是 css 的属性都是带“-”的，所以我们访问要改成驼峰式命名
+		// 在脚本化的 css 中所有属性的值都应该是字符串
+		var a = document.querySelector(".span1");
+		var a2 = document.querySelector(".span2");
+		setTimeout(function(){
+			a.style.color = "#fff";
+			a.style.border = "1px solid #999";
+			a.style.backgroundColor = "#000";
+			a.style.height = "50px";
+			a.style.lineHeight = "50px";
+			a.style.textIndent = "20px";
+		},2000);
+
+		// 3. 脚本化 css 样式
+		// style 样式脚本化的一种可选方案是脚本化 class 属性值
+		// 因为 class 是一个保留字，所以使用 className 来替代 html 的 class 属性
+		setTimeout(function(){
+			a2.className = "";
+			a2.className = "span2-animate";
+		},2000);
+	</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>BOM</title>
+</head>
+<body>
+	<div id="demo">
+		test
+	</div>
+	<script type="text/javascript">
+		// 回调：想要让程序响应一个事件，写一个函数，这个函数就叫做“回调”，或者“事件处理程序”或者“事件监听器”
+		// 事件处理程序的属性的名字以 "on" 开始，后面跟着事件的名字
+		// 然后注册这个函数，这样他就会在事件发生时调用它，例如以下：
+		var a  = document.getElementById("demo");
+		// addEventListener() 在 ie9 之后才实现，第三个参数是实现冒泡或者捕获，默认是false
+		a.addEventListener("click",function() {
+			console.log('aaaa');
+		},false);
+
+		// 1. setTimeout() 和 setInterval()
+		// setTimeout() 设置延时一定时间之后执行操作
+		// setInterval() 设置以一定时间循环操作
+		// clearTimeout() 取消 setTimeout() 函数调用执行
+		// clearInterval() 取消 setInterval() 函数调用执行
+		// 如果给 setTimeout() 传入了0毫秒的话，那么指定的函数不会立即执行，而会把这个函数放在队列中，等前面处于等待的状态的事件处理完了才会调用它
+		setTimeout(function(){
+			console.log('zzzz');
+		},3000);
+		clearTimeout();
+		// setInterval(function(){
+		// 	console.log('xxxx');
+		// },1000);
+		// clearInterval();
+
+		// 2. window.location
+		// window.location 属性引用的是 Location 对象，表示窗口当前显示文档的 url，
+		// 这个对象的属性有：href，protocol，host，hostname，port，pathname，search 和 hash，这些被称为 url 分解属性
+		// search 和 hash 返回的是“？”之后的 url（包括“？”），这个属性对于解析 url 很有帮助
+		function urlArgs() {
+			var args = {};
+			var query = window.location.search.substring(1); // 去掉 “？”
+			var pairs = query.split("&");
+			for(var i = 0;i < pairs.length; i++) {
+				var pos = pairs[i].indexOf("=");
+				if(pos == -1) continue;
+				var name = pairs[i].substring(0,pos);
+				var value = pairs[i].substring(pos+1);
+				args[name] = value;
+			}
+			return args;
+		};
+		console.log("url: ", urlArgs()); // {aa: "11", bb: "22", cc: "33"}
+
+		// Location 对象常用有三个方法 assign()，replace() 和 reload()
+		// assign() 和 replace()这两个方法都是载入并且显示你指定的url文档
+		// 但是 replace() 在载入新文档之前会从浏览历史中把当前文档删除，所以这个方法比 assign() 更好
+		// reload() 方法可以重新载入当前文档
+		if(!XMLHttpRequest) {
+			window.location.replace("static.html"); // 若不支持 XMLHttpRequest 则跳转页面
+		}
+		// 其实使浏览器跳转到新页面的方法传统的是直接给 location 属性赋值新的 url
+		// window.location = "page2.html"
+
+		// 3. window.history
+		// window.history 属性引用的是 History 对象
+		// history 属性常用的有三个方法 back()，forward() 和 go()
+		// window.history.back();  // 使当前页面后退一步，后退1步
+		// window.history.forward();  // 使向前一步，前进1步
+		// window.history.go(-4);  // 接受传入整数参数的页数，后退4步
+
+		// 4. window.navigator
+		// window.navigator 属性获取浏览器信息，引用的是 Navigator 对象
+		// Navigator 对象有四个属性，这些属性可以进行浏览器嗅探：appName, appVersion, userAgent, platform
+		// appName：浏览器全程，appVersion：浏览器版本，但是没有办法直接用它判断浏览器类型
+		// userAgent：通常包括 appVersion 中的所有信息，通常使用这个来嗅探浏览器
+		// platform：运行浏览器的操作系统
+		var browser = window.navigator.userAgent.toLowerCase();
+		console.log("browser: ", browser);
+
+		// 5. window.screen
+		// window.screen 属性获取窗口的大小和单位像素可用颜色的数量，引用的是 Screen 对象
+		// Screen 对象有五个属性
+		// width 和 height 指定窗口的大小
+		// availWidth 和 availHeight 指定实际可用窗口的大小，排除导航栏之外的空间
+		// colorDepth 指定单位像素可用颜色的数量
+		var screenWidth = window.screen.width,
+		screenHeight = window.screen.height,
+		availWidth = window.screen.availWidth,
+		availHeight = window.screen.availHeight,
+		colorDepth = window.screen.colorDepth;
+		console.log("screen: ", screenWidth, screenHeight, availWidth, availHeight, colorDepth);
+
+		// 5. window.open()
+		// window.open() 使浏览器打开一个新的窗口，有四个参数
+		// 第一个参数是新窗口显示的 url
+		// 第二个参数是新窗口显示的名字，忽略这个参数将以 _blank 打开
+		// 第三个参数是逗号分隔列表，包括大小属性，但是 html5 中不推荐使用了
+		// 第四个参数在第二个参数存在时才可以使用，true 代表第一个参数的 url 是否要替换掉窗口浏览历史的当前记录
+		// 通常 open() 只有当用户手动单击按钮或链接的时候才会调用，否则一般浏览器都增加了弹出窗口过滤系统
+
+		// 6. window.close()
+		// window.close() 关闭当前窗口
+
+	</script>
+</body>
+</html>

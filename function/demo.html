@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>函数</title>
+</head>
+<body>
+	<ul>
+		<li>1</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+	</ul>
+	<script type="text/javascript" src="js/beModule.js"></script>
+	<script type="text/javascript">
+		// 当函数作为对象的属性调用时，函数就称为方法
+		var demo = {
+			square: function(x){
+				return x*x;
+			}
+		};
+		console.log("demo: ", demo.square(16)); // 这个时候 square 函数就称为对象 demo 的方法
+
+		// 嵌套函数调用的 this 指向全局对象或者 undefined
+		var o = {
+			m: function(){
+				var self = this;
+				console.log('1: ', this == o);
+				f();
+				function f(){
+					console.log('2: ', this == o);
+					console.log('3: ', self == o);
+				}
+			}
+		};
+		o.m();
+
+		// arguments 实参对象的使用
+		function a(x,y,z){
+			if (arguments.length != 3){
+				throw new Error ("this function need 3 arguments")
+			}
+		}
+		// a(1,2); // Uncaught Error: this function need 3 arguments
+		a(1,2,3);
+
+		// callee 和 caller 是实参对象（arguments）的两个属性。
+		// callee 指代当前正在执行的函数
+		// caller 指代调用当前正在执行的函数的函数
+		var factorial = function(x){
+			if (x <= 1) return 1;
+			return x * arguments.callee(x-1);
+		}
+		console.log("factorial: ", factorial(5));
+
+		// 函数的名称其实是不可见的，函数的名称仅仅是变量的名字，这个变量指代函数对象
+		function square(x) {
+			return x*x;
+		}
+		var squa = function(x) {
+			return x*x;
+		}
+		var s = square;
+		var b = squa;
+		console.log("s: ", s(5));
+		console.log("b: ", b(5));
+
+		// 函数可以作为一个参数带入到另外一个函数当中
+		function operate(a,b,c) {
+			if (typeof Be[a] === 'function') {
+				return Be[a](b,c);
+			} else {
+				throw new Error('This is not a function');
+			}
+		}
+		var j = operate("add", "hello", operate("add", " ", "world"));
+		var k = operate("pow", 10, 2);
+		console.log("j: ",j);
+		console.log("k: ",k);
+
+		// 函数闭包特性
+		var scope = "global";
+
+		function closure(){
+			var scope = "local";
+			function b() {
+				return scope;
+			}
+			return b;
+		}
+		console.log('closure: ', closure()());
+
+		// 作用域
+		var scope = "global scope";
+		function checkscope(){
+			var scope = "local scope";
+			function nested(){
+				var scope = "nested scope";
+				return scope;
+			}
+			return nested();
+		}
+		console.log("scope: ", checkscope());
+
+		// js 不存在块级作用域，只存在函数作用域，函数体内的变量声明会提前到函数的体顶部
+		var a = "aaaa";
+		function f(){
+			console.log('a: ', a);
+			var a = "bbbb";
+			console.log('a: ', a);
+		}
+		f();
+		// 这个函数相当于
+		function f(){
+			var a; // 变量声明会在函数体顶部就被声明了
+			console.log('a: ', a);
+			a = "bbbb";
+			console.log('a: ', a);
+		}
+		f();
+
+		// 闭包
+		var element = document.getElementsByTagName("li");
+		for(var q = 0; q < element.length; q++){
+			(function(n){
+				element[n].onclick = function(){
+					console.log(element[n]);
+				}
+			})(q);
+		}
+		// 以下和这个写法，使用块级作用域，也是可以实现的
+		// for(let q = 0; q < element.length; q++){
+		// 	element[q].onclick = function(){
+		// 		console.log(element[q]);
+		// 	}
+		// }
+
+		// with 语句通常用来减少特定情形下必须写入的代码数量。
+		var x = Math.cos(3 * Math.PI) + Math.sin(Math.LN10),
+			y = Math.tan(14 * Math.E);
+		// 使用 with 语句重写
+		with(Math) {
+			x = cos(3 * PI) + sin (LN10);
+			y = tan(14 * E);
+		}
+
+		uniqueInteger.count = 0;
+
+		function uniqueInteger(){
+			return uniqueInteger.count++;
+		}
+		var unique = new uniqueInteger();
+
+		console.log(uniqueInteger());
+		console.log(uniqueInteger());
+		console.log(uniqueInteger());
+
+		// 词法作用域：函数执行依赖的变量作用域是在函数定义的时候决定的，不是函数调用时决定的
+		// 为了实现这种词法作用域，js函数对象的内部状态不仅包含函数的代码逻辑，还必须应用当前的作用域链
+		// 函数对象可以通过作用域链关联起来，函数体内部的变量都可以保存在函数作用域内，称之为“闭包”
+
+		// 创建新的对象或者类
+		// 属性使用构造器去实现
+		function newObject(name, message) {
+			this.name = name.toString();
+			this.message = message.toString();
+		}
+		// 方法使用原型去实现
+		newObject.prototype.getName = function() {
+			return this.name;
+		}
+		newObject.prototype.getMessage = function() {
+			return this.message;
+		}
+		// 或者
+		function newObject(name, message){
+			this.name = name.toString();
+			this.message = message.toString();
+		}
+		(function(){
+			this.getName = function() {
+				return this.name;
+			},
+			this.getMessage = function() {
+				return this.message;
+			}
+		}).call(newObject.prototype);
+
+		// 将（）把一个函数包起来不会影响这个函数的执行或者其他，这个是使用匿名立即调用函数惯用的手法
+		function test() {
+			console.log('bevis\' test');
+		}
+		(test)();
+
+		// js function 中自带的属性很少，比较常用的有 length，prototype 属性
+		// js function 中自带的方法比较常用的有 call(), apply(), bind(), toString()
+		// 判断函数传入的实参和形参个数是否一致，不一致则抛出错误
+		// 函数的length属性是形参的个数
+		function check(x,y,z) {
+			var actual = arguments.length;
+			var except = arguments.callee.length;
+
+			if (except !== actual) {
+				throw new Error("the arguments length are not excepted")
+			}
+			return x + y + z;
+		}
+
+		console.log('check: ', check(1,2,3));
+		// 函数的 toString 会返回这个函数的完整源码
+		console.log('function toString: ', check.toString());
+
+		// 判断一个对象是否是函数
+		function isFunction(x){
+			return Object.prototype.toString.call(x) === "[object Function]";
+		}
+
+		console.log("isFunction: ", isFunction(check));
+
+	</script>
+</body>
+</html>

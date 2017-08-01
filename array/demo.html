@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>数组方法</title>
+</head>
+<body>
+	<script type="text/javascript">
+		// 在 ES4 开始就已经给数组定义了一些经典的方法，经典方法一共有12个。ES5 新增加了9个方法，一共21个。
+		// 对数组直接操作的有，会修改原数组有7个：reverse(), sort(), splice(), push(), pop(), unshift(), shift()
+
+		// 1.
+		// join() 方法将数组的所有元素转化为字符串，这个方法不会改变自身数组，会返回一个新的字符串
+		// Array.join() 方法是 String.split() 方法的逆操作
+		var a = ["A","da","34","7"];
+		var a1 = a.join("-");
+		console.log("join: ", a);  // ["A", "da", "34", "7"]
+		console.log("join: ", a1); // "A-da-34-7"
+		console.log("join: ", typeof a1); // string
+
+		// 2.
+		// reverse() 方法将数组的元素顺序颠倒，这个方法会将原数组覆盖
+		var b = [1,32,23,56,3];
+		b.reverse();
+		console.log("reverse: ", b);  // [3, 56, 23, 32, 1]
+
+		// 3.
+		// sort() 方法将数组中的元素排序，这个方法会将原数组覆盖
+		// 注意到这个排序是按照字母表的顺序排序的，所以数字的排序其实不准确，应该传入参数（函数）
+		// 假如我们排序时首字母大小写不要区分时，比较函数首先将参数都转化为小写 toLowerCase()
+		var c1 = [21,324,234,34,1,96];
+		var c2 = ["dfa","saf","faf","rad","gv"];
+		var c3 = [21,12,5,14,1,96];
+		var c4 = ["ant","Bug","cat","Dog"];
+		c1.sort(
+			function(a,b){
+				return a-b; //正序排列
+			}
+		);
+		c2.sort();
+		c3.sort(
+			function(a,b){
+				return b-a; //倒序排列
+			}
+		);
+		c4.sort(
+			function(a,b){
+				var i = a.toLowerCase();
+				var j = b.toLowerCase();
+				if(i<j) return -1;
+				if(i>j) return 1;
+			}
+		)
+		console.log("sort: ", c1);  // [1, 21, 34, 96, 234, 324]
+		console.log("sort: ", c2);  // ["dfa", "faf", "gv", "rad", "saf"]
+		console.log("sort: ", c3);  // [96, 21, 14, 12, 5, 1]
+		console.log("sort: ", c4);  // [96, 21, 14, 12, 5, 1]
+
+		// 4.
+		// concat() 方法将数组合并，这个方法不会改变自身数组，会返回一个新的数组
+		// 如果 concat() 的参数是数组，那么连接的是数组的元素，而不是数组本身，对于多维数组，只能解析第一层
+		var d = [1,2,3];
+		var d1 = d.concat(4,5);
+		var d2 = d.concat([4,5]);
+		var d3 = d.concat([4,5],[6,7]);
+		var d4 = d.concat(4,[5,[6,7]]);
+		console.log("concat: ", d); // [1, 2, 3]
+		console.log("concat: ", d1); // [1, 2, 3, 4, 5]
+		console.log("concat: ", d2); // [1, 2, 3, 4, 5]
+		console.log("concat: ", d3); // [1, 2, 3, 4, 5, 6, 7]
+		console.log("concat: ", d4); // [1, 2, 3, 4, 5, [6, 7]]
+
+		// 5.
+		// slice() 方法返回指定数组的一个片段子数组，这个方法不会改变自身数组，会返回一个新的数组
+		// 包含两个参数，第一个参数是开始，且包含，第二个是结束，不包含
+		var e = [1,2,3,4,5];
+		var e1 = e.slice(1,3);
+		console.log('slice: ', e);  // [1, 2, 3, 4, 5]
+		console.log('slice: ', e1); // [2, 3]
+
+		// 6.
+		// splice() 方法是数组中插入或删除元素的通用方法。这个方法会将原数组覆盖
+		// splice() 第一个参数是插入或者删除的起始位置
+		// 第二个参数是删除元素的个数，如果忽略了第二个参数那么从起始点到末尾的元素都会删除
+		// splice() 返回一个由删除元素组成的数组，而且原数组会变成修改后的数组
+		// 这两个参数之后跟随的参数就是要插入的元素
+		var f1 = [1,2,3,4,5,6,7,8];
+		var f2 = [1,2,3,4,5,6,7,8];
+		var f3 = [1,2,3,4,5,6,7,8];
+		f1.splice(4);
+		f2.splice(1,2);
+		f3.splice(1,0,"a","b","c");
+		console.log("splice: ", f1);  // [1, 2, 3, 4]
+		console.log("splice: ", f2);  // [1, 4, 5, 6, 7, 8]
+		console.log("splice: ", f3);  // [1, "a", "b", "c", 2, 3, 4, 5, 6, 7, 8]
+
+		// 7.
+		// push() 和 pop()，push()在尾部添加一个或者多个元素，pop() 删除尾部最后一个元素
+		// push() 这个方法会覆盖原来的数组，并且返回新的数组的长度
+		// pop() 这个方法会覆盖原来的数组，并且返回删除的元素
+		var g1 = [];
+		var g2 = [1,2,4];
+		g1.push(1,3,8); // [1,3,8]
+		g2.pop(); // [1,3]
+		console.log("push: ", g1);  // [1, 3, 8]
+		console.log("pop: ", g2);  // [1, 2]
+
+		// 8.
+		// unshift() 和 shift()，unshift()在数组头部添加一个或者多个元素，shift() 删除头部第一个元素
+		// unshift() 和 shift() 方法会覆盖原来的数组
+		var h1 = [2,4,5];
+		var h2 = [1,2,4];
+		h1.unshift(1,3,8); // [1,3,8]
+		h2.shift(); // [1,3]
+		console.log("unshift: ", h1);  // [1, 3, 8, 2, 4, 5]
+		console.log("shift: ", h2);  // [2, 4]
+
+		// 9.
+		// toString() 和 toLocaleString() 方法，这个方法不会覆盖原数组
+		// 数组的这个方法是将每个元素转化为字符串，并且用“,”连接起来的字符串
+		// 与不带入参数的 join() 方法是一样的
+		// toLocaleString() 是 toString() 的本地化版本，实际使用不多
+		var i = [2,4,5];
+		var i1 = i.toString();
+		console.log("toString: ", i);  // [2,4,5]
+		console.log("toString: ", i1);  // "2,4,5"
+
+		// ES5 中数组增加了新的方法，一共有9个
+		// 大多数方法的第一个参数是传入一个函数，并且对每一个数组元素调用这个函数
+		// 大多数函数接受三个参数，第一个数组元素，第二个元素索引，第三个数组本身
+
+		// 1.
+		// forEach() 从头到位遍历数组，为每个元素调用传入的函数，不会返回一个返回值，会修改数组本身
+		var data1 = [1,2,3,4,5];
+		var sum = 0;
+		var data11 = data1.forEach(function(v,i,a){
+			a[i] = v+1;
+		});
+		console.log("forEach: ", data1);  // [2,3,4,5,6]
+		console.log("forEach: ", data11); // undefined
+
+		// 2.
+		// map() 也是从头到尾遍历数组，为每个元素调用传入的参数，会返回一个新的数组
+		// 但是 map 是有返回指的，返回一个新的数组，不影响之前的数组
+		var data2 = [1,2,3,4,5];
+		var data22 = data2.map(function(x){
+			return x*x;
+		});
+		console.log("map: ", data2);  // [1,2,3,4,5]
+		console.log("map: ", data22); // [1,4,9,16,25]
+
+		// 3.
+		// filter() 将数组从头到尾的调用传入的函数，返回为true的值传入新的数组中，并返回这个新的数组
+		var data3 = [2,3,5,6,7,9];
+		var data33 = data3.filter(
+			function(x){
+				return x%2 == 0;
+			}
+		);
+		var data34 = data3.filter(
+			function(x){
+				return x>3;
+			}
+		);
+		console.log("filter: ", data3);  // [2, 3, 5, 6, 7, 9]
+		console.log("filter: ", data33); // [2, 6]
+		console.log("filter: ", data34); // [5, 6, 7, 9]
+
+		// 4.
+		// every() 和 some() 是数组的逻辑判定，对数组元素进行函数的指定判定，最终返回boolean值 true或false
+		// every 在数组元素都满足函数返回true的时候才返回true
+		// some 在数组元素有一个满足函数返回true的时候返回true
+		// 注意一旦 every 和 some 确认返回值之后就会停止遍历数组元素
+		// some 在判定第一个true的时候就返回true，若一直是false就会遍历整个数组
+		// every 在判定第一个false返回就返回false，若一直是true就回遍历整个数组
+		// 对于空数组调用，[].every() 返回 true，[].some() 返回false
+		var data4 = [2,3,5,2,6,7,9];
+		var data44 = data4.every(
+			function(x){
+				return x<10;
+			}
+		);
+		var data45 = data4.some(
+			function(x){
+				return x<5;
+			}
+		);
+		console.log("every: ", data4);  // [2, 3, 5, 2, 6, 7, 9]
+		console.log("every: ", data44); // true
+		console.log("some: ", data45); // true
+
+		// 5.
+		// reduce() 和 reduceRight() 使用函数将数组元素组合，生成单个值，最后返回这个值。这个是函数式编程中称为“注入”和“折叠”
+		// reduce() 需要两个参数，第一个是执行的函数，第二个可选的参数是传递给函数的初始值
+		// 假如没有第二个参数，那么初始值就是数组的第一个参数
+		// reduceRight() 工作原理和 reduce() 一样，不同的是它是按照索引从高到低的顺序，从右到左
+		// reduce() 和 reduceRight() 不仅可以可以处理数字计算，对于对象数组的合并也是可以的
+		var data5 = [2,3,5,234,672,42];
+		var data55 = data5.reduce(
+			function(x,y){
+				return x+y;
+			},0
+		);
+		var data56 = data5.reduce(
+			function(x,y){
+				return x*y;
+			},0
+		);
+		var data57 = data5.reduce(
+			function(x,y){
+				return x*y;
+			},1
+		);
+		var data58 = data5.reduceRight(
+			function(x,y){
+				return x*y;
+			}
+		);
+		var object = [
+			{x:1,a:1},
+			{y:1,b:2},
+			{z:1,a:3}
+		];
+		function extend(o,p){
+			for(i in p){
+				o[i] = p[i];
+			}
+			return o;
+		}
+		var merge = object.reduce(
+			function union(o,p){
+				return extend(o,p);
+			}
+		);
+		console.log("reduce: ", data5);  // [2, 3, 5, 234, 672, 42]
+		console.log("reduce: ", data55); // 958
+		console.log("reduce: ", data56); // 0，因为初始值是0，所以值相乘0最后都是0
+		console.log("reduce: ", data57); // 198132480
+		console.log("reduceRight: ", data57); // 198132480
+		console.log("merge: ", merge); // 198132480
+
+		// 6.
+		// indexOf() 和 lastIndexOf() 搜索元素中指定的索引位置，lastIndexOf是搜索最后一次元素出现的索引位置
+		// 如果未找到则返回 -1
+		// 这两个方法和其他的方法不一样，他们不需要传入函数作为参数，可以接受两个参数
+		// 第一个参数接受需要搜索的值，第二个可选参数是指定从这个参数值的位置开始索引
+		// 字符串也有这两个方法，可以把字符串想像成单个字符的数组，用法结果也是一样的
+		var data6 = [1,2,43,234,658,32,1,53];
+		var string = "asdascasasde";
+		var data66 = data6.indexOf(658);
+		var data67 = data6.lastIndexOf(1);
+		var data68 = string.indexOf("d");
+		console.log("indexOf: ", data66); // 4
+		console.log("lastIndexOf: ", data67); // 6
+		console.log("string indexOf: ", data68); // 2
+
+		// 补充
+		// es5 中我们可以使用 Array.isArray(Array) 函数来判断对象是否是数组了
+		var isArray = Array.isArray(data6);
+		console.log("isArray: ", isArray); // true
+	</script>
+</body>
+</html>

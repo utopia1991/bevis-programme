@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>DOM</title>
+</head>
+<body>
+	<!-- 给文档元素设置 contenteditable="true" 就可以使这个变成可以编辑 -->
+	<div id="demo" contenteditable="false">
+		test
+	</div>
+	<form name="form-address" action="#form" method="post" data-width="100">
+		address
+	</form>
+	<span>
+		this is a span1
+	</span>
+	<div class="demo" style="position:relative;">
+		this is a span2
+		<p style="margin:30px;position:relative;">13023981769</p>
+	</div>
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand " href="/" title="Agile Health insurance - Affordable Health Insurance Quotes, Short Term Health Insurance">Agile Health Insurance</a>
+		</div>
+		<div id="navbar">
+			<form class="navbar-form navbar-right">
+				<div class="form-group phoneCTA">
+					<p class="header-phone reset">(800) 314-5594</p>
+					<p class="header-phone-text reset">Licensed Agents Available</p>
+				</div>
+				<div class="form-group mobilePhoneCTA" id="mobilePhoneCTA">
+					<a href="tel:8447335143" class="click-to-call">
+						Speak with a Licensed Agent
+					</a>
+				</div>
+			</form>
+		</div>
+		<div class="navbar-list-menu">
+			<ul>
+				<li><a href="/health-insurance-quotes" class="navbar-list-link">Short Term Health Insurance</a></li>
+				<li><a href="/dental-insurance-quotes" class="navbar-list-link">Dental Insurance</a></li>
+				<li><a href="/help" class="navbar-list-link">Help Center</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="spark" data-min="0" data-max="10">
+		1 1 3 5 3 6 8 2 7 3 8 4 6
+	</div>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<script type="text/javascript">
+		// 1. 获取文档元素
+		// (1)通过 id 选取元素：getElementById()
+		// 只有这个方法是 "getElementBy"，因为 id 是唯一的
+		var a = document.getElementById("demo");
+		console.log("getElementById", a);  // <div id="demo">test</div>
+
+		// (2)通过 name 选取元素：getElementsByName()
+		// 这个方法返回 NodeList（一组数组），但是 name属性只有少数元素才有，表单，表单元素，iframe 和 img
+		var b = document.getElementsByName("form-address");
+		console.log("getElementsByName", b);  // [form]
+
+		// (3)通过 tag name 选取元素：getElementsByTagName()
+		// 这个方法返回 NodeList（一组数组）
+		var c = document.getElementsByTagName("span")[0];
+		console.log("getElementsByTagName", c);  //  <span>this is a span1</span>
+
+		// (4)通过 css 选取元素：getElementsByClassName()
+		var d = document.getElementsByClassName("demo");
+		console.log("getElementsByClassName", d);  //  <span>this is a span1</span>
+
+		// (5)通过 css 选择器选取元素：querySelectorAll()，（css3 新增的获取元素的方法）
+		// querySelectorAll() 方法返回的是 NodeList，一个数组
+		// 还有一个 querySelector()，这个方法会返回寻找元素的第一个元素，因此不是数组
+		// 这个强大的方法和 jquery 中的 $() 方法功能是类似的
+		var e1 = document.querySelectorAll(".demo"),
+			e2 = document.querySelectorAll("#demo")[0].innerHTML,
+			e3 = document.querySelectorAll("form");
+		console.log("querySelectorAll", e1);  // [span.demo]
+		console.log("querySelectorAll", e2);  // test
+		console.log("querySelectorAll", e3);  // [form]
+
+		// 2. 文档结构的遍历
+		// document 里面的对象都是 node 对象，都有以下属性
+		// parentNode 该节点的父节点，父节点只有一个
+		// childNodes 该节点的子节点，子节点可以很多个，推荐使用去text和comment版本：children
+		// firstNode/lastNode 第一个子节点／最后一个子节点，推荐使用去text和comment版本：firstElementChild／lastElementChild
+		// nextSibling/previousSibling 前一个兄弟节点／后一个兄弟节点，推荐使用去text和comment版本：nextElementSibling／previousElementSibling
+		var f1 = document.querySelector(".navbar-list-link").parentNode;
+		// var f2 = document.querySelector("#navbar").childNodes;
+		// 我们可以使用去除 text（之间的空白）更实用的属性：children
+		var f22 = document.querySelector("#navbar").children;
+		// var f3 = document.querySelector("#navbar").firstChild;
+		// 我们可以使用去除 text（之间的空白）更实用的属性：firstElementChild
+		var f33 = document.querySelector(".container").firstElementChild;
+		// var f4 = document.querySelector("#navbar").lastChild;
+		// 我们可以使用去除 text（之间的空白）更实用的属性：lastElementChild
+		var f44 = document.querySelector(".container").lastElementChild;
+		var f55 = document.querySelector("#navbar").nextElementSibling;
+		var f66 = document.querySelector("#navbar").previousElementSibling;
+		console.log("parentNode", f1);  // <li>...</li>
+		// console.log("childNodes", f2);  // [text, form.navbar-form.navbar-right, text]
+		console.log("children", f22);  // [form.navbar-form.navbar-right]
+		// console.log("firstChild", f3);  // #text
+		console.log("firstElementChild", f33);  // <div class="navbar-header">...</div>
+		console.log("lastElementChild", f44);  // <div class="navbar-list-menu">...</div>
+		console.log("nextElementSibling", f55);  // <div class="navbar-list-menu">...</div>
+		console.log("previousElementSibling", f66);  // <div class="navbar-header">...</div>
+
+		// 3.文档元素属性
+		// html 元素由一个标签和一组属性的名／值对组成
+		var g = document.forms[0];
+		var action = g.action;
+		var method = g.method;  // action 和 method 都是其元素的属性
+		console.log("attr: ", action, method);
+
+		// 属性的增删改
+		// getAttribute() 获取其元素属性（属性值是被当成字符串的）（查）
+		// setAttribute() 设置其元素属性（增，改）
+		// hasAttribute() 检测是是否存在某属性（查）
+		// removeAttribute() 删除某属性（删）
+		console.log("getAttribute: ", parseInt(g.getAttribute("data-width")));  // 100
+		g.setAttribute("class", "newSet");
+		console.log("setAttribute: ", g);  // <form name="form-address" action="#form" method="post" class="newSet"></form>
+		console.log("hasAttribute: ", g.hasAttribute("class"));  // true
+		g.removeAttribute("class");
+		console.log("removeAttribute: ", g);  // <form name="form-address" action="#form" method="post"></form>
+
+		// 在 html5 中给 dom 元素添加以 “data-” 开头的属性是合法的，且不会对元素属性造成影响
+		// 而且 html5 新增了一个 dataset 属性（IE11以上和当前的chrome浏览器支持），它是一个对象，每个属性对应去掉“data-”前缀的属性
+		var spark = document.querySelector(".spark");
+		var dataset = spark.dataset;
+		console.log("dataset: ", dataset);  // {min: "0", max: "10"}
+
+		// attributes 是一个属性，因此我们可以直接使用这个来访问元素属性（只针对 element 节点）
+		// 这个属性返回的是所有的属性
+		console.log("attributes: ", spark.attributes[0]);  // class="spark"
+		console.log("attributes class: ", spark.attributes.class);  // class="spark"
+		console.log("attributes data-min: ", spark.attributes["data-min"]);  // data-min="0"
+
+		// 4.文档元素内容
+		//（1）返回 html 内容：innerHTML 和 outerHTML
+		// innerHTML 属性返回的那个元素的内容，但是这个属性 “+=” 操作符重复拼接文本效率底下，因为即要序列化又要解析
+		// outerHTML 属性返回元素本身，包括开头和结尾标签
+		var nav = document.querySelector("#navbar");
+		console.log("innerHTML: ", nav.innerHTML);
+		// 返回
+		// <form class="navbar-form navbar-right">
+		// 		<div class="form-group phoneCTA">
+		// 			<p class="header-phone reset">(800) 314-5594</p>
+		// 			<p class="header-phone-text reset">Licensed Agents Available</p>
+		// 		</div>
+		// 		<div class="form-group mobilePhoneCTA" id="mobilePhoneCTA">
+		// 			<a href="tel:8447335143" class="click-to-call">
+		// 				Speak with a Licensed Agent
+		// 			</a>
+		// 		</div>
+		// 	</form>
+		console.log("outerHTML: ", nav.outerHTML);
+		// 返回
+		// <div id="navbar">
+		// 	<form class="navbar-form navbar-right">
+		// 		<div class="form-group phoneCTA">
+		// 			<p class="header-phone reset">(800) 314-5594</p>
+		// 			<p class="header-phone-text reset">Licensed Agents Available</p>
+		// 		</div>
+		// 		<div class="form-group mobilePhoneCTA" id="mobilePhoneCTA">
+		// 			<a href="tel:8447335143" class="click-to-call">
+		// 				Speak with a Licensed Agent
+		// 			</a>
+		// 		</div>
+		// 	</form>
+		// </div>
+
+		// (2) 返回 text 内容：innerText 和 textContent
+		// 两者的功能都是一样的，返回内容里面的文本
+		// innerText 是 ie 引入的，除了 firefox 之外的可以使用
+		// textContent 除了 ie 之外的可以使用，推荐使用这个属性
+		console.log("textContent: ", nav.textContent);
+		// 返回元素的所有文本
+		// (800) 314-5594
+		// Licensed Agents Available
+		// Speak with a Licensed Agent
+
+		// 5.文档节点的增删改
+		//（1）创建节点：createElement()
+		// 创建文本节点：createTextNode()
+		// 每个节点都有一个方法复制本身的副本：cloneNode()
+		var newNode1 = document.createElement("p");
+		var newNode2 = document.createElement("p");
+		var newNode3 = document.createElement("p");
+		newNode1.textContent = "Bevis1!";
+		newNode2.textContent = "Bevis2!";
+		newNode3.textContent = "Bevis3!";
+		// (2) 插入节点：insertBefore() 或者 appendChild()
+		// appendChild() 插入一个节点并且成为这个节点的最后一个子节点
+		// insertBefore() 插入到节点的前面
+		// insertBefore() 接受两个参数，第一个是要插入的节点，第二个是已存在的节点（必须是父节点的子节点）
+		// 第二个参数传入 null 则和 appendChild() 方法一样就插在最后
+		var node = document.querySelector(".phoneCTA");
+		node.appendChild(newNode1);
+		node.insertBefore(newNode2,node.children[1]);
+		//（3）删除节点：removeChild()
+		setTimeout(function(){
+			node.removeChild(node.firstElementChild);
+		},1000);
+		// (4) 替换节点：replaceChild()
+		// 删除一个子节点，用一个新的节点取而代之，接受两个参数
+		// 第一个参数是新节点，第二个参数是被替换掉的节点
+		setTimeout(function(){
+			node.replaceChild(newNode3,node.firstElementChild);
+		},2000);
+
+		// 6.文档滚动方法
+		// window.scrollTo()（这个方法和 scrollTo() 是一样的） 第一个参数是 x 坐标，第二个参数是 y 坐标，并作为滚动条的偏移量设置它们
+		setTimeout(function(){
+			window.scrollTo(0,100);
+			// 或者
+			window.scroll(0,100);
+		},3000);
+		// window.scrollBy() 方法与scrollTo() 类似，但是他的参数是相对的
+		// 这样会没 1 毫秒下降 10px
+		// setInterval(function(){
+		// 	window.scrollBy(0,10);
+		// },100);
+
+		// 7.文档元素尺寸和位置
+		// 这些属性除了 scrollTop／scrollLeft 是可读可写之外，其他的都只是可读的
+		// offsetWidth／offsetHeight 返回元素的宽度和高度，返回的尺寸包含了边框和内边距，除去了外边距
+		// offsetLeft 返回元素的 x 坐标
+		// offsetTop 返回元素的 y 坐标
+		// offsetParent 当前元素相对的父元素，若这个相对父元素为 null，则相对文档
+		var con = document.querySelector('.demo > p');
+		console.log("offsetWidth", con.offsetWidth);  // 1290
+		console.log("offsetHeight", con.offsetHeight);  // 22
+		console.log("offsetLeft", con.offsetLeft);  // 30
+		console.log("offsetTop", con.offsetTop);  // 52
+		console.log("offsetParent", con.offsetParent);  // <div class="demo" style="position:relative;">...</div>
+
+		// clientWidth／clientHeight 类似 offsetWidth／offsetHeight，只是不包含边框
+		console.log("clientWidth", con.clientWidth);  // 1290，因为元素无边框，所以和 offsetWidth 一样
+		console.log("clientHeight", con.clientHeight);  // 22，因为元素无边框，所以和 clientHeight 一样
+
+		// scrollWidth／scrollHeight 相当与 clientWidth／clientHeight 加上溢出的内容尺寸，假如没有溢出则相等
+		// scrollTop／scrollLeft 用来指定元素的滚动条位置，通过设置它可以让元素中的内容滚动
+	</script>
+</body>
+</html>

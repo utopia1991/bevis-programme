@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>实现一段脚本，使得点击对应li输出其内容</title>
+</head>
+<body>
+	<ul>
+		<li>第一个链接</li>
+		<li>第二个链接</li>
+		<li>第三个链接</li>
+		<li>第四个链接</li>
+	<ul>
+	<script type="text/javascript">
+		var lis = document.getElementsByTagName('li');
+		// 方法一：使用闭包把每次执行的变量存下来
+		for(var i = 0; i < lis.length; i++) {
+			(function(i) {
+				lis[i].onclick = function() {
+					console.log(lis[i].innerHTML);
+				};
+			})(i);
+		}
+
+		// 方法二：使用块级作用域
+		// for(let i = 0; i < lis.length; i++) {
+		// 	lis[i].onclick = function() {
+		// 		console.log(lis[i].innerHTML);
+		// 	};
+		// }
+	</script>
+</body>
+</html>
