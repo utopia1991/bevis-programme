@@ -1,0 +1,56 @@
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="description" content="">
+  <title>ES6</title>
+</head>
+
+<body>
+  <div id="app"></div>
+
+  <script>
+    // 对于 Function 扩展
+    // 1. ES6 允许使用“箭头”（=>）定义函数
+    // let f = (num1, num2) => num1 + num2;
+    // 上面的箭头函数等同于：
+    // let f = function(num1,num2) {
+    //   return num1 + num2;
+    // };
+    // f 函数可以转化为
+    let f1 = (num1, num2) => {
+      return num1 + num2
+    };
+    console.log(f1(4, 8)); // 12
+
+    // 箭头函数可以与变量解构结合使用。
+    let f2 = ({
+      first,
+      last
+    }) => {
+      return first + ' ' + last
+    };
+    // 等同于
+    // function f2(person) {
+    //   return person.first + ' ' + person.last;
+    // }
+    let person = {
+      first: "bevis",
+      last: "shen",
+    }
+    console.log(f2(person)); // bevis shen
+
+    // 箭头函数的一个用处是简化回调函数。
+    // 正常函数写法
+    [1, 2, 3].map(function(x) {
+      return x * x;
+    });
+    // 箭头函数写法
+    let arr1 = [1, 2, 3].map(x => x * x);
+    console.log('arr', arr1); // [1, 4, 9]
+
+  </script>
+</body>
+
+</html>

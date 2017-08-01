@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>svg demo</title>
+</head>
+
+<body>
+
+  <div id="app">
+    <p>
+      圆：
+      <svg width="300" height="150">
+        <!--
+          圆 circle ：
+          cx 圆心x坐标，
+          cy 圆心y坐标，
+          r 半径，
+          fill 填充色，
+          stroke 边框色，
+          stroke-width 边框宽度
+        -->
+        <circle
+          cx="30" cy="30" r="30"
+          style="
+            fill:red
+          "
+        />
+      </svg>
+    </p>
+    <p>
+      椭圆：
+      <svg width="300" height="150">
+        <!--
+          椭圆 ellipse ：
+          cx 圆心x坐标，
+          cy 圆心y坐标，
+          rx 水平半径，
+          ry 垂直半径
+        -->
+        <ellipse
+          cx="100" cy="52"
+          rx="100" ry="50"
+          style="
+            fill:rgb(200,100,50);
+            stroke:rgb(0,0,100);
+            stroke-width:2
+          "
+        />
+      </svg>
+    </p>
+    <p>
+      直线：
+      <svg width="300" height="150">
+        <!--
+          直线 line ：
+          x1 x 轴定义线条的开始；
+          y1 y 轴定义线条的开始；
+          x2 x 轴定义线条的结束；
+          y2 y 轴定义线条的结束
+        -->
+        <line
+          x1="0" y1="0"
+          x2="100" y2="100"
+          style="
+            stroke:rgb(99,99,99);
+            stroke-width:2
+          "
+        />
+      </svg>
+    </p>
+    <p>
+      矩形：
+      <svg width="300" height="150">
+        <!--
+          矩形 rect ：
+          width 定义矩形的宽度
+          height 定义矩形的高度
+        -->
+        <rect
+          width="200" height="100"
+          style="
+            fill:rgb(0,0,255);
+            stroke-width:1;
+            stroke:rgb(0,0,0)
+          "
+        />
+      </svg>
+    </p>
+    <p>
+      多边形：
+      <svg width="300" height="150">
+        <!--
+          多边形 polygon ：
+          points 多边形顺时针每个点的坐标（x，y）
+        -->
+        <polygon
+          points="0,0 300,10 250,120 10,120"
+          style="
+            fill:#cccccc;
+            stroke:#000000;
+            stroke-width:2
+          "
+        />
+      </svg>
+    </p>
+    <p>
+      折线：
+      <svg width="300" height="150">
+        <!--
+          折线 polyline ：
+          points 多边形顺时针每个点的坐标（x，y）
+        -->
+        <polyline
+          points="0,0 10,20 20,20 20,40 40,40 50,120 100,120"
+          style="
+            fill:white;
+            stroke:#000000;
+            stroke-width:2
+          "
+        />
+      </svg>
+    </p>
+  </div>
+
+</body>
+
+</html>

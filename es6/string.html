@@ -1,0 +1,60 @@
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="description" content="">
+  <title>ES6</title>
+</head>
+
+<body>
+  <div id="app">
+
+  </div>
+
+  <script>
+    // 对于 String 扩展
+    // 1.includes(), startsWith(), endsWith()
+    const s1 = 'Hello world!';
+    console.log('includes', s1.includes("llo")); // true
+    console.log('startsWith', s1.startsWith("H")); // true
+    console.log('endsWith', s1.endsWith("!")); // true
+
+    // 这三个方法都支持第二个参数，表示开始搜索的位置。
+    console.log('startsWith', s1.startsWith('world', 6)); // true
+    console.log('endsWith', s1.endsWith('Hello', 5)); // true
+    console.log('include', s1.includes('Hello', 6)); // false
+    // 使用第二个参数n时，endsWith 的行为与其他两个方法有所不同，它针对前n个字符
+    // 而其他两个方法针对从第n个位置直到字符串结束。
+
+    //2. repeat()
+    // repeat方法返回一个新字符串， 表示将原字符串重复n次。
+    console.log('x'.repeat(3)); // "xxx"
+    console.log('hello'.repeat(4)); // "hellohellohellohello"
+    console.log('na'.repeat(0)); // ""
+
+    // 3.模板字符串
+    // 传统的JavaScript语言， 输出模板通常是这样写的。
+
+    // $('#result').append(
+    //   'There are <b>' + basket.count + '</b> ' +
+    //   'items in your basket, ' +
+    //   '<em>' + basket.onSale +
+    //   '</em> are on sale!'
+    // );
+    // 上面这种写法相当繁琐不方便， ES6引入了模板字符串解决这个问题。
+
+    const basket = {
+      count: 34,
+      onSale: 12
+    }
+    document.querySelector('#app').append(`
+      There are ${basket.count} items, in your basket, ${basket.onSale} are on sale!
+    `);
+    // 模板字符串（ template string）是增强版的字符串， 用反引号（ `）标识
+    // 它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,146 @@
+<html>
+
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="description" content="">
+  <title>ES6</title>
+</head>
+
+<body>
+  <div id="app">
+
+  </div>
+
+  <script>
+    // 1.let
+    // let 命令，用来声明变量。它的用法类似于var
+    // 但是所声明的变量，只在let命令所在的代码块内有效
+    // ES5 只有全局作用域和函数作用域，没有块级作用域，这带来很多不合理的场景
+    // let 实际上为 JavaScript 新增了块级作用域
+    // let 申明的变量不存在变量提升的现象
+    for (let a = 0; a < 3; a++) {
+      console.log('let', a);
+    }
+    // console.log('global', a);
+    // let 0
+    // let 1
+    // let 2
+    // index.html:19 Uncaught ReferenceError: a is not defined
+
+    // for 循环有一个特别之处，是设置循环变量的那部分是一个父作用域
+    // 而循环体内部是一个单独的子作用域
+    for (let i = 0; i < 2; i++) {
+      let i = 'abc';
+      console.log(i);
+      // abc
+      // abc
+    }
+
+    // let 不允许在相同作用域内， 重复声明同一个变量。
+    // 报错
+    function let1() {
+      let a = 10;
+      var a = 1;
+    }
+    // 报错
+    function let2() {
+      let a = 10;
+      let a = 1;
+    }
+
+    // 2.const
+    // const 声明一个只读的常量。一旦声明，常量的值就不能改变
+    // const 的作用域与let命令相同：只在声明所在的块级作用域内有效。
+    const PI = 3.1415;
+    console.log('PI1', PI); // PI1 3.1415
+
+    // PI = 3;
+    // console.log('PI2', PI);
+    // TypeError: Assignment to constant variable.
+
+    // ES6 声明变量的六种方法
+    // ES5 只有两种声明变量的方法： var命令和function命令。
+    // ES6 除了添加let和const命令，另外两种声明变量的方法： import命令和class命令。
+    // ES6 一共有6种声明变量的方法。
+
+    // 3. 解构赋值
+    // 以前，为变量赋值，只能直接指定值。
+    // 如果解构不成功，变量的值就等于undefined
+    let a1 = 1;
+    let b1 = 2;
+    let c1 = 3;
+    // ES6 允许写成下面这样。
+    let [a2, b2, c2] = [1, 2, 3];
+    console.log('解构赋值1', a2, b2, c2); // 解构赋值1 1 2 3
+
+    let [foo, [
+      [bar], baz
+    ]] = [1, [
+      [2], 3
+    ]];
+    console.log('解构赋值2', foo, bar, baz); // 解构赋值2 1 2 3
+
+    // 解构不仅可以用于数组，还可以用于对象
+    // 对象的解构与数组有一个重要的不同。数组的元素是按次序排列的，变量的取值由它的位置决定
+    // 而对象的属性没有次序，变量必须与属性同名，才能取到正确的值
+    let {
+      bar,
+      foo
+    } = {
+      foo: "aaa",
+      bar: "bbb"
+    };
+    console.log('解构赋值3', foo, bar); // 解构赋值3 "aaa" "bbb"
+
+    let {
+      baz
+    } = {
+      foo: "aaa",
+      bar: "bbb"
+    };
+    console.log('解构赋值3', baz) // undefined
+
+    // 解构赋值用途:
+    // (1) 函数参数的定义
+    // 解构赋值可以方便地将一组参数与变量名对应起来。
+    // 参数是一组有次序的值
+    // function f([x, y, z]) {}
+    // f([1, 2, 3]);
+    // 参数是一组无次序的值
+    // function f({
+    //   x,
+    //   y,
+    //   z
+    // }) {}
+    // f({
+    //   z: 3,
+    //   y: 2,
+    //   x: 1
+    // });
+
+    // (2) 提取JSON数据
+    // 解构赋值对提取JSON对象中的数据， 尤其有用。
+    // let jsonData = {
+    //   id: 42,
+    //   status: "OK",
+    //   data: [867, 5309]
+    // };
+    // let {
+    //   id,
+    //   status,
+    //   data: number
+    // } = jsonData;
+    // console.log(id, status, number);  // 42, "OK", [867, 5309]
+
+    // (3) 输入模块的指定方法
+    // 加载模块时， 往往需要指定输入哪些方法。 解构赋值使得输入语句非常清晰。
+    // const {
+    //   SourceMapConsumer,
+    //   SourceNode
+    // } = require("source-map");
+
+  </script>
+</body>
+
+</html>
