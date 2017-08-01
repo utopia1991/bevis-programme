@@ -1,2 +1,2 @@
-# bevis-programmer
-Learning js programmer
+# bevis-programme
+Learning JS
