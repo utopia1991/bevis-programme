@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>网宿云-CloudDNS_全球流量调度GTM</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link href="./assets/project.css" rel="stylesheet">
+	<script src="./assets/jquery-min.js"></script>
+</head>
+
+<body>
+	<div style="position:relative;width:92px;">
+		<div class="select_emulate_wrap">
+			<div class="select_emulate">
+				<span data-val="*">默认</span>
+			</div>
+		</div>
+		<!-- 线路列表 -->
+		<ul class="select_emulate_option" id="selectLine"></ul>
+	</div>
+
+	<script type="text/javascript">
+		//线路下拉框
+		var selectActiveObj;
+		var json = [
+			{
+				"key": "GOSN_INTF",
+				"content": [{
+					"code": "GOSN_INTF_BACKUP_FILE",
+					"name": "备份文件相关接口"
+				}, {
+					"code": "GOSN_INTF_CORE_BZ",
+					"name": "核心业务接口"
+				}, {
+					"code": "GOSN_INTF_DEV_INFO",
+					"name": "设备信息相关接口"
+				}, {
+					"code": "GOSN_INTF_DOWNLOAD",
+					"name": "文件下载接口"
+				}, {
+					"code": "GOSN_INTF_FILE_OPER",
+					"name": "文件操作接口"
+				}, {
+					"code": "GOSN_INTF_FLOW",
+					"name": "流量上报接口"
+				}, {
+					"code": "GOSN_INTF_NO_GROUP",
+					"name": "不分组"
+				}, {
+					"code": "GOSN_INTF_STATIC_ROUTE",
+					"name": "静态路由接口"
+				}, {
+					"code": "GOSN_INTF_UPGRADE",
+					"name": "版本升级相关接口"
+				}, {
+					"code": "GOSN_INTF_UPLOAD",
+					"name": "文件上传接口"
+				}]
+			},
+			{
+				"key": "RCT_INTF",
+				"content": [{
+					"code": "RCT_INTF_DISPATCH",
+					"name": "影视接口"
+				}, {
+					"code": "RCT_INTF_NO_GROUP",
+					"name": "不分组"
+				}, {
+					"code": "RCT_INTF_RELAY",
+					"name": "中转接口"
+				}, {
+					"code": "RCT_INTF_SDK",
+					"name": "SDK接口"
+				}, {
+					"code": "RCT_INTF_TRANSMISSION",
+					"name": "传输接口"
+				}, {
+					"code": "RCT_INTF_WSKX",
+					"name": "网宿快线接口"
+				}]
+			},
+			{
+				"key": "ACCA_INTF",
+				"content": [{
+					"code": "ACCA_INTF_CHANNEL_CONF",
+					"name": "频道配置接口"
+				}, {
+					"code": "ACCA_INTF_CLOUD_SITE",
+					"name": "云加速站点范围接口"
+				}, {
+					"code": "ACCA_INTF_DNS",
+					"name": "智能DNS接口"
+				}, {
+					"code": "ACCA_INTF_FILE_UPLOAD",
+					"name": "文件上传接口"
+				}, {
+					"code": "ACCA_INTF_GET_BZ_CONF",
+					"name": "业务配置获取接口"
+				}, {
+					"code": "ACCA_INTF_GET_FILE_TICKET",
+					"name": "文件令牌获取接口"
+				}, {
+					"code": "ACCA_INTF_LOG_FILE_UPLOAD",
+					"name": "日志文件上传接口"
+				}, {
+					"code": "ACCA_INTF_NETIO",
+					"name": "分流策略接口"
+				}, {
+					"code": "ACCA_INTF_NO_GROUP",
+					"name": "不分组"
+				}, {
+					"code": "ACCA_INTF_PRE_FETCH",
+					"name": "智能预取接口"
+				}, {
+					"code": "ACCA_INTF_SERVICE",
+					"name": "服务单信息接口"
+				}, {
+					"code": "ACCA_INTF_SOFT_CONF",
+					"name": "软件配置接口"
+				}, {
+					"code": "ACCA_INTF_TOPURL",
+					"name": "热点URL接口"
+				}]
+			},
+			{
+				"key": "APPA_INTF",
+				"content": [{
+					"code": "APPA_INTF_NO_GROUP",
+					"name": "不分组"
+				}, {
+					"code": "APPA_INTF_SELF_MONITOR",
+					"name": "自助监测接口"
+				}, {
+					"code": "APPA_INTF_SOFT_CONF",
+					"name": "软件配置接口"
+				}]
+			}
+		];
+
+		$(document).ready(function() {
+			// 遍历线路列表
+			for (var i = 0; i < json.length; i++) {
+				var rootListDom = '<li>' + '<span class="optionlink selecte_item" data-val="' + json[i].key + '">' + json[i].key + '</span>';
+
+				if (json[i].content !== undefined && json[i].content.length > 0) {
+					rootListDom += '<ul class="hover_select">';
+
+					for (var j = 0; j < json[i].content.length; j++) {
+						rootListDom += '<li class="selecte_item" data-val="' + json[i].content[j].code + '">' + json[i].content[j].name + '</li>';
+					}
+
+					rootListDom += '</ul>';
+				}
+
+				rootListDom += '</li>';
+
+				$("#selectLine").append(rootListDom);
+			}
+		});
+
+		$(document).on("click", function(e) {
+			var targetobj = $(e.target);
+			if (targetobj.parents(".select_emulate_wrap").length < 1) {
+				selecthide();
+			}
+		});
+
+		function selecthide() {
+			$(".select_emulate_option").hide();
+			$(".hover_select").hide();
+		}
+		$("#selectLine").on("click", ".hover_item", function(e) {
+			return false;
+		});
+		// 选中获值
+		$("#selectLine").on("click", ".selecte_item", function(e) {
+			var text = $(this).text();
+			var val = $(this).data("val");
+			selectActiveObj.find(".select_emulate span").html(text).attr("data-val", val);
+			console.log('aaaa', val);
+			selecthide();
+			return false;
+		});
+		$(".select_emulate_wrap").on("click", ".select_emulate", function() {
+			$(this).siblings(".select_emulate_option").toggle();
+		});
+
+		// 下拉框items鼠标划入
+		$(document).delegate(".select_emulate_option li", "mouseenter", function(e) {
+	    var containheight = $("body").height();
+	    $(this).addClass("hover");
+	    var selectobj = $(this).find(".hover_select");
+	    selectobj.css("top", '-99999px').show();
+	    var selectheight = selectobj.height();
+	    var offsettop = $(this).offset().top;
+	    if (offsettop + selectheight > containheight) {
+	      selectobj.css({
+	        "margin-top": "0",
+	        "top": "0"
+	      })
+	    } else {
+	      selectobj.css("top", "0");
+	    }
+	  }).delegate(".select_emulate_option li", "mouseleave", function(e) {
+	    $(this).removeClass("hover");
+	    $(this).find(".hover_select").hide();
+	  });
+
+		$(".select_emulate_wrap").live("click", function() {
+			var obj = $(this);
+			selectActiveObj = obj;
+			var offset = obj.offset();
+			var objheight = obj.height();
+			var selectobj = $("#selectLine");
+			selectobj.css({
+				"left": offset.left,
+				"top": 0
+			}).show();
+		});
+
+	</script>
+
+</body>
+
+</html>

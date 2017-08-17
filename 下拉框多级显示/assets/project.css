@@ -1,0 +1,68 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.select_emulate_wrap {
+  display: inline-block;
+  position: relative;
+}
+
+.select_emulate {
+  display: inline-block;
+  padding: 0px 5px;
+  border: 1px solid #ccc;
+  vertical-align: middle;
+  height: 30px;
+  line-height: 30px;
+  width: 110px;
+  position: relative;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.select_emulate_option {
+  position: relative;
+  border: 1px solid #CCCCCC;
+  background: #fff;
+  text-align: left;
+  width: 120px;
+  display: none;
+}
+
+.select_emulate_option li {
+  cursor: pointer;
+  position: relative;
+  list-style: none;
+  font-size: 14px;
+}
+
+.select_emulate_option .optionlink {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  padding: 2px 5px;
+  overflow: hidden;
+}
+
+.select_emulate_option .optionlink:hover, .select_emulate_option li.hover .optionlink, .selecte_item.hover {
+  background: #33BCCF;
+  color: #fff;
+}
+
+.select_emulate_option .hover_select {
+  position: absolute;
+  left: 120px;
+  min-width: 150px;
+  max-width: 200px;
+  top: 0;
+  border: 1px solid #D9D9D9;
+  display: none;
+  overflow: hidden;
+}
+
+.select_emulate_option .selecte_item {
+  height: 30px;
+  line-height: 30px;
+  padding: 2px 8px;
+}
