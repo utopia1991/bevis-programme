@@ -146,7 +146,7 @@
 					rootListDom += '<ul class="hover_select">';
 
 					for (var j = 0; j < json[i].content.length; j++) {
-						rootListDom += '<li class="selecte_item" data-val="' + json[i].content[j].code + '">' + json[i].content[j].name + '</li>';
+						rootListDom += '<li class="selecte_item selecte_item_li" data-val="' + json[i].content[j].code + '">' + json[i].content[j].name + '</li>';
 					}
 
 					rootListDom += '</ul>';
@@ -173,7 +173,7 @@
 			return false;
 		});
 		// 选中获值
-		$("#selectLine").on("click", ".selecte_item", function(e) {
+		$("#selectLine").on("click", ".selecte_item_li", function(e) {
 			var text = $(this).text();
 			var val = $(this).data("val");
 			selectActiveObj.find(".select_emulate span").html(text).attr("data-val", val);

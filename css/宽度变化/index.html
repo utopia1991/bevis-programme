@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  	<meta charset="UTF-8">
+  	<title>CSS3侧边栏收缩展开</title>
+  	<style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .box {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        height: 500px;
+      }
+      #demo {
+        width: 20%;
+        background: #666;
+        height: 100%;
+        flex: 2;
+      }
+      #demo2 {
+        background: #999;
+        flex: 10;
+        height: 100%;
+      }
+      .smallWidth {
+        animation: moveSmall 1s ease forwards;
+      }
+      .bigWidth {
+        animation: moveBig 1s ease forwards;
+      }
+      @keyframes moveSmall {
+        from {
+          flex: 2;
+        }
+        to {
+          flex: 1;
+        }
+      }
+      @keyframes moveBig {
+        from {
+          flex: 1;
+        }
+        to {
+          flex: 2;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <p id="run">
+      运行
+    </p>
+    <div class="box">
+      <div id="demo"></div>
+      <div id="demo2"></div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+      $("#run").click(function(){
+        $demo = $("#demo");
+        if ($demo.hasClass('smallWidth')) {
+          $demo.removeClass('smallWidth').addClass('bigWidth');
+        } else {
+          $demo.removeClass('bigWidth').addClass('smallWidth');
+        }
+      });
+    </script>
+  </body>
+
+</html>
